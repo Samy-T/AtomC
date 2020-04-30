@@ -3,7 +3,7 @@
 void readFile()
 {
     FILE* file_input;
-    if (fopen_s(&file_input, "../TestFiles/8.c", "r") != 0)
+    if (fopen_s(&file_input, "../TestFiles/9.c", "r") != 0)
     {
         printf("Error with file input!\n");
     }
@@ -19,10 +19,20 @@ void analizorLexical()
     while (getNextTk() != END);
 }
 
+void analizorSintactic()
+{
+    if (unit())
+        printf("Syntax OK\n");
+    else
+        tkerr(crtTk, "Syntax Error\n");
+}
+
 int main(int argc, char* argv[])
 {
     readFile();
     analizorLexical();
+    crtTk = tokens;
+    analizorSintactic();
     showAtoms(tokens);
     terminare(tokens);
 

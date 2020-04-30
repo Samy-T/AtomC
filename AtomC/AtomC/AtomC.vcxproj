@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="analizorLexical.c" />
+    <ClCompile Include="analizorSintactic.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>

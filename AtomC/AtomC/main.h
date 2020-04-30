@@ -70,6 +70,7 @@ typedef struct _Token
 
 extern Token* tokens;
 extern char* pch;
+extern Token* crtTk;
 
 // LEXICAL FUNCTION DECLARATIONS
 

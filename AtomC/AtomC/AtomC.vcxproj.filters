@@ -21,6 +21,9 @@
     <ClCompile Include="analizorLexical.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="analizorSintactic.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">

@@ -17,10 +17,99 @@ int consume(int code)
     return 0;
 }
 
+// ANALIZA DE DOMENIU
+
+int crtDepth = 0;   // ("adancimea" contextului curent, initial 0)
+Symbols symbols;
+Symbol* crtStruct;
+Symbol* crtFunc;
+
+void initSymbols(Symbols* symbols)
+{
+    symbols->begin = NULL;
+    symbols->end = NULL;
+    symbols->after = NULL;
+}
+
+Symbol* addSymbol(Symbols* symbols, const char* name, int cls)
+{
+    Symbol* s;
+    if (symbols->end == symbols->after)    // create more room
+    {
+        int count = symbols->after - symbols->begin;
+        int n = count * 2; // double the room
+        if (n == 0)
+            n = 1; // needed for the initial case
+        symbols->begin = (Symbol**)realloc(symbols->begin, n * sizeof(Symbol*));
+        if (symbols->begin == NULL)
+            err("Not enough memory!");
+        symbols->end = symbols->begin + count;
+        symbols->after = symbols->begin + n;
+    }
+    SAFEALLOC(s, Symbol)
+        * symbols->end++ = s;
+    s->name = name;
+    s->cls = cls;
+    s->depth = crtDepth;
+    return s;
+}
+
+Symbol* findSymbol(Symbols* symbols, const char* name)  // Find a symbol with given name in specified Symbols Table
+{
+    int index = (symbols->end) - (symbols->begin) - 1;
+    for (int i = index; i >= 0; i--)
+    {
+        if (strcmp(symbols->begin[i]->name, name) == 0)
+            return symbols->begin[i];
+    }
+    return NULL;
+}
+
+void deleteSymbolsAfter(Symbols* symbols, Symbol* symbolPointer)    // Delete all symbols after symbol given in symbolPointer
+{
+    int index = 0;
+    for (Symbol** i = symbols->begin; i != symbols->end; i++, index++)
+    {
+        if (i == &symbolPointer)  // Find symbolPointer in Symbols Table
+        {
+            for (Symbol** j = i++; j != symbols->end; j++)
+            {
+                free(j);    // Delete symbols after symbolPointer
+            }
+            symbols->end = symbols->begin + index + 1;
+        }
+    }
+}
+
+void addVar(Token* tkName, Type* t)
+{
+    Symbol* s;
+    if (crtStruct) {
+        if (findSymbol(&crtStruct->members, tkName->text))
+            tkerr(crtTk, "symbol redefinition: %s", tkName->text);
+        s = addSymbol(&crtStruct->members, tkName->text, CLS_VAR);
+    }
+    else if (crtFunc) {
+        s = findSymbol(&symbols, tkName->text);
+        if (s && s->depth == crtDepth)
+            tkerr(crtTk, "symbol redefinition: %s", tkName->text);
+        s = addSymbol(&symbols, tkName->text, CLS_VAR);
+        s->mem = MEM_LOCAL;
+    }
+    else {
+        if (findSymbol(&symbols, tkName->text))
+            tkerr(crtTk, "symbol redefinition: %s", tkName->text);
+        s = addSymbol(&symbols, tkName->text, CLS_VAR);
+        s->mem = MEM_GLOBAL;
+    }
+    s->type = *t;
+}
+
 // unit: ( declStruct | declFunc | declVar )* END ;
 int unit()
 {
     Token* startTk = crtTk;
+    initSymbols(&symbols);
     for (;;)
     {
         if (declStruct()) {
@@ -46,8 +135,13 @@ int declStruct()
     {
         if (consume(ID))
         {
+            Token* tkName = consumedTk;
             if (consume(LACC))
             {
+                if (findSymbol(&symbols, tkName->text))
+                    tkerr(crtTk, "symbol redefinition: %s", tkName->text);
+                crtStruct = addSymbol(&symbols, tkName->text, CLS_STRUCT);
+                initSymbols(&crtStruct->members);
                 for (;;)
                 {
                     if (declVar()) {
@@ -58,6 +152,7 @@ int declStruct()
                 {
                     if (consume(SEMICOLON))
                     {
+                        crtStruct = NULL;
                         return 1;
                     }
                     else tkerr(crtTk, "missing ';' after '}' for STRUCT");
@@ -75,11 +170,19 @@ int declVar()
 {
     Token* startTk = crtTk;
     int isDV;
-    if (typeBase())
+    Type t;
+
+    if (typeBase(&t))
     {
         if (consume(ID))
         {
-            isDV = arrayDecl();
+            Token* tkName = consumedTk;;
+            isDV = arrayDecl(&t);
+            if (!isDV)
+            {
+                t.nElements = -1;
+            }
+            addVar(tkName, &t);
             for (;;)
             {
                 if (consume(COMMA))
@@ -87,11 +190,16 @@ int declVar()
                     isDV = 1;
                     if (consume(ID))
                     {
-                        arrayDecl();
+                        tkName = consumedTk;
+                        if (!arrayDecl(&t))
+                        {
+                            t.nElements = -1;
+                        }
                     }
                     else tkerr(crtTk, "expected variable name after ','");
                 }
                 else break;
+                addVar(tkName, &t);
             }
             if (consume(SEMICOLON))
             {
@@ -112,22 +220,31 @@ int declVar()
 }
 
 // typeBase: INT | DOUBLE | CHAR | STRUCT ID ;
-int typeBase()
+int typeBase(Type* ret)
 {
     Token* startTk = crtTk;
     if (consume(INT)) {
+        ret->typeBase = TB_INT;
         return 1;
     }
     else if (consume(DOUBLE))
     {
+        ret->typeBase = TB_DOUBLE;
         return 1;
     }
     else if (consume(CHAR))
     {
+        ret->typeBase = TB_CHAR;
         return 1;
     }
     else if (consume(STRUCT)) {
         if (consume(ID)) {
+            Token* tkName = consumedTk;
+            Symbol* s = findSymbol(&symbols, tkName->text);
+            if (s == NULL)tkerr(crtTk, "undefined symbol: %s", tkName->text);
+            if (s->cls != CLS_STRUCT)tkerr(crtTk, "%s is not a struct", tkName->text);
+            ret->typeBase = TB_STRUCT;
+            ret->s = s;
             return 1;
         }
         else tkerr(crtTk, "missing struct name after STRUCT");
@@ -137,11 +254,12 @@ int typeBase()
 }
 
 // arrayDecl: LBRACKET expr? RBRACKET ;
-int arrayDecl()
+int arrayDecl(Type* ret)
 {
     Token* startTk = crtTk;
     if (consume(LBRACKET)) {
         expr();
+        ret->nElements = 0;       // for now do not compute the real size
         if (consume(RBRACKET))
         {
             return 1;
@@ -153,11 +271,14 @@ int arrayDecl()
 }
 
 // typeName: typeBase arrayDecl? ;
-int typeName()
+int typeName(Type* ret)
 {
-    if (typeBase())
+    if (typeBase(ret))
     {
-        arrayDecl();
+        if (!arrayDecl(ret))
+        {
+            ret->nElements = -1;
+        }
         return 1;
     }
     return 0;
@@ -166,12 +287,20 @@ int typeName()
 /* declFuncPrim: ID
                  LPAR ( funcArg ( COMMA funcArg )* )? RPAR
                  stmCompound ; */
-int declFuncPrim()
+int declFuncPrim(Type* t)
 {
+
     if (consume(ID))
     {
+        Token* tkName = consumedTk;
         if (consume(LPAR))
         {
+            if (findSymbol(&symbols, tkName->text))
+                tkerr(crtTk, "symbol redefinition: %s", tkName->text);
+            crtFunc = addSymbol(&symbols, tkName->text, CLS_FUNC);
+            initSymbols(&crtFunc->args);
+            crtFunc->type = *t;
+            crtDepth++;
             if (funcArg())
             {
                 for (;;)
@@ -187,8 +316,11 @@ int declFuncPrim()
             }
             if (consume(RPAR))
             {
+                crtDepth--;
                 if (stmCompound())
                 {
+                    deleteSymbolsAfter(&symbols, crtFunc);  // se elimina simbolurile adaugate din functie
+                    crtFunc = NULL;
                     return 1;
                 }
             }
@@ -206,17 +338,26 @@ int declFuncPrim()
 int declFunc()
 {
     Token* startTk = crtTk;
-    if (typeBase())
+    Type t;
+    if (typeBase(&t))
     {
-        consume(MUL);
-        if (declFuncPrim())
+        if (consume(MUL))
+        {
+            t.nElements = 0;
+        }
+        else
+        {
+            t.nElements = -1;
+        }
+        if (declFuncPrim(&t))
         {
             return 1;
         }
     }
     else if (consume(VOID))
     {
-        if (declFuncPrim())
+        t.typeBase = TB_VOID;
+        if (declFuncPrim(&t))
         {
             return 1;
         }
@@ -229,11 +370,22 @@ int declFunc()
 int funcArg()
 {
     Token* startTk = crtTk;
-    if (typeBase())
+    Type t;
+    if (typeBase(&t))
     {
         if (consume(ID))
         {
-            arrayDecl();
+            Token* tkName = consumedTk;
+            if (!arrayDecl(&t))
+            {
+                t.nElements = -1;
+            }
+            Symbol* s = addSymbol(&symbols, tkName->text, CLS_VAR);
+            s->mem = MEM_ARG;
+            s->type = t;
+            s = addSymbol(&crtFunc->args, tkName->text, CLS_VAR);
+            s->mem = MEM_ARG;
+            s->type = t;
             return 1;
         }
         else tkerr(crtTk, "expected variable name for function argument");
@@ -397,8 +549,11 @@ int stm()
 int stmCompound()
 {
     Token* startTk = crtTk;
+    Symbol* start = symbols.end[-1];
+
     if (consume(LACC))
     {
+        crtDepth++;
         for (;;)
         {
             if (declVar()) {
@@ -408,6 +563,8 @@ int stmCompound()
             else break;
         }
         if (consume(RACC)) {
+            crtDepth--;
+            deleteSymbolsAfter(&symbols, start);
             return 1;
         }
         else tkerr(crtTk, "missing '}'");
@@ -636,9 +793,10 @@ int exprMul()
 int exprCast()
 {
     Token* startTk = crtTk;
+    Type t;
     if (consume(LPAR))
     {
-        if (typeName())
+        if (typeName(&t))
         {
             if (consume(RPAR))
             {

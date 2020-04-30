@@ -32,6 +32,7 @@ int main(int argc, char* argv[])
     readFile();
     analizorLexical();
     crtTk = tokens;
+    initSymbols(&symbols);
     analizorSintactic();
     showAtoms(tokens);
     terminare(tokens);

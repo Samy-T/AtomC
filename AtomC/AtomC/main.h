@@ -118,3 +118,4 @@ void terminare(Token* tk);
 
 int unit();             // unit: ( declStruct | declFunc | declVar )* END ;    
 void initSymbols(Symbols* symbols);
+void addExtFunctions(); // Add default functions: void put_s(char s[]), void get_s(char s[]), void put_i(int i), int get_i(), void put_d(double d), double get_d(), char get_c(), double seconds()

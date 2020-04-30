@@ -1,25 +1,27 @@
 ﻿  analizorLexical.c
   analizorSintactic.c
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(115,23): warning C4013: 'declStruct' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(117,26): warning C4013: 'declFunc' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(119,25): warning C4013: 'declVar' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(175,17): warning C4013: 'typeBase' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(180,29): warning C4013: 'arrayDecl' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(261,13): warning C4013: 'expr' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(304,24): warning C4013: 'funcArg' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(320,32): warning C4013: 'stmCompound' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(406,24): warning C4013: 'stm' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(580,19): warning C4013: 'exprAssign' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(593,18): warning C4013: 'exprUnary' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(605,15): warning C4013: 'exprOr' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(618,20): warning C4013: 'exprAnd' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(647,19): warning C4013: 'exprEq' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(677,20): warning C4013: 'exprRel' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(707,20): warning C4013: 'exprAdd' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(737,20): warning C4013: 'exprMul' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(767,21): warning C4013: 'exprCast' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(831,25): warning C4013: 'exprPostfix' undefined; assuming extern returning int
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(876,20): warning C4013: 'exprPrimary' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(260,23): warning C4013: 'declStruct' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(262,26): warning C4013: 'declFunc' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(264,25): warning C4013: 'declVar' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(320,17): warning C4013: 'typeBase' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(325,29): warning C4013: 'arrayDecl' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(407,17): warning C4013: 'expr' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(460,24): warning C4013: 'funcArg' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(476,32): warning C4013: 'stmCompound' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(565,24): warning C4013: 'stm' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(755,19): warning C4013: 'exprAssign' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(768,18): warning C4013: 'exprUnary' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(785,15): warning C4013: 'exprOr' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(799,20): warning C4013: 'exprAnd' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(833,19): warning C4013: 'exprEq' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(869,20): warning C4013: 'exprRel' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(905,20): warning C4013: 'exprAdd' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(943,20): warning C4013: 'exprMul' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(981,21): warning C4013: 'exprCast' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(1068,25): warning C4013: 'exprPostfix' undefined; assuming extern returning int
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(1130,20): warning C4013: 'exprPrimary' undefined; assuming extern returning int
   main.c
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\main.c(36,16): warning C4013: 'addExtFuncs' undefined; assuming extern returning int
   Generating Code...
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\analizorSintactic.c(197): warning C4715: 'getArithType': not all control paths return a value
   AtomC.vcxproj -> D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\Debug\AtomC.exe

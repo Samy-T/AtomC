@@ -33,6 +33,7 @@ int main(int argc, char* argv[])
     analizorLexical();
     crtTk = tokens;
     initSymbols(&symbols);
+    addExtFuncs();
     analizorSintactic();
     showAtoms(tokens);
     terminare(tokens);

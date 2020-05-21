@@ -87,6 +87,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,6 +142,8 @@
     <ClCompile Include="analizorLexical.c" />
     <ClCompile Include="analizorSintactic.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="masinaVirtuala.c" />
+    <ClCompile Include="masinaVirtualaTest.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h" />

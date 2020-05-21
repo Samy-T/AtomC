@@ -24,6 +24,12 @@
     <ClCompile Include="analizorSintactic.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="masinaVirtuala.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="masinaVirtualaTest.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">

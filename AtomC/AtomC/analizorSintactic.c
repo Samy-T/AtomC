@@ -196,10 +196,11 @@ Type getArithType(Type* t1, Type* t2)
     }
 }
 
-Symbol* addExtFunc(const char* name, Type type)
+Symbol* addExtFunc(const char* name, Type type, void* addr)
 {
     Symbol* s = addSymbol(&symbols, name, CLS_EXTFUNC);
     s->type = type;
+    s->addr = addr;
     initSymbols(&s->args);
     return s;
 }
@@ -211,41 +212,96 @@ Symbol* addFuncArg(Symbol* func, const char* name, Type type)
     return a;
 }
 
+/* ------------------------------ PREDEFINED FUNCTIONS ------------------------------ */
+
+void put_s(char s[])    // Afiseaza sirul de caractere dat
+{
+    printf("%s", s);
+}
+
+get_s(char s[])     // Cere de la tastatura un sir de caractere si il depune in s
+{
+    scanf("%s", s);
+}
+
+void put_ii(int i)  // Afiseaza intregul i
+{
+    printf("%d", i);
+}
+
+int get_ii()  // Cere de la tastatura un numar real
+{
+    int i;
+    scanf("%d", &i);
+    return i;
+}
+
+put_d(double d)     // Afiseaza numarul real d
+{
+    printf("%lf", d);
+}
+
+double get_d()      // Cere de la tastatura un numar real
+{
+    double d;
+    scanf("%lf", &d);
+    return d;
+}
+
+void put_c(char c)  // Afiseaza caracterul c
+{
+    printf("%c", c);
+}
+
+char get_c()    // Cere de la tastatura un caracter
+{
+    char c;
+    scanf("%c", &c);
+    return c;
+}
+
+double seconds()
+{
+    time_t seconds;
+    seconds = time(NULL);
+    return seconds / 3600;
+}
+
 void addExtFuncs()
 {
-    Symbol* s;
+    Symbol* s, * a;
     // void put_s(char s[]) - Afiseaza sirul de caractere dat
-    s = addExtFunc("put_s", createType(TB_VOID, -1));
+    s = addExtFunc("put_s", createType(TB_VOID, -1), put_s);
     addFuncArg(s, "s", createType(TB_CHAR, 0));
 
     // void get_s(char s[]) - Cere de la tastatura un sir de caractere si il depune in s
-    s = addExtFunc("get_s", createType(TB_VOID, -1));
+    s = addExtFunc("get_s", createType(TB_VOID, -1), get_s);
     addFuncArg(s, "s", createType(TB_CHAR, 0));
 
-    // void put_i(int i) - Afiseaza intregul �i�
-    s = addExtFunc("put_i", createType(TB_VOID, -1));
+    // void put_i(int i) - Afiseaza intregul i
+    s = addExtFunc("put_i", createType(TB_VOID, -1), put_ii);
     addFuncArg(s, "s", createType(TB_INT, -1));
 
     // int get_i() - Cere de la tastatura un intreg
-    s = addExtFunc("get_i", createType(TB_INT, -1));
+    s = addExtFunc("get_i", createType(TB_INT, -1), get_ii);
 
-    // void put_d(double d) - Afiseaza numarul real �d�
-    s = addExtFunc("put_d", createType(TB_VOID, -1));
+    //// void put_d(double d) - Afiseaza numarul real d
+    s = addExtFunc("put_d", createType(TB_VOID, -1), put_d);
     addFuncArg(s, "d", createType(TB_DOUBLE, -1));
 
     // double get_d() - Cere de la tastatura un numar real
-    s = addExtFunc("get_d", createType(TB_DOUBLE, -1));
+    s = addExtFunc("get_d", createType(TB_DOUBLE, -1), get_d);
 
-    // void put_c(char c) - Afiseaza caracterul �c�
-    s = addExtFunc("put_c", createType(TB_VOID, -1));
-    addFuncArg(s, "c", createType(TB_CHAR, -1));
+    // void put_c(char c) - Afiseaza caracterul c
+    s = addExtFunc("put_c", createType(TB_VOID, -1), put_c);
+    //addFuncArg(s, "c", createType(TB_CHAR, -1));
 
     // char get_c() - Cere de la tastatura un caracter
-    s = addExtFunc("get_c", createType(TB_CHAR, -1));
+    s = addExtFunc("get_c", createType(TB_CHAR, -1), get_c);
 
     // double seconds() - Returneaza un numar (posibil zecimal pentru precizie mai buna) de secunde.
                        // Nu se specifica de cand se calculeaza acest numar (poate fi de la inceputul rularii programului, de la 1 / 1 / 1970, ...)
-    s = addExtFunc("seconds", createType(TB_DOUBLE, -1));
+    s = addExtFunc("seconds", createType(TB_DOUBLE, -1), seconds);
 }
 
 // IMPLEMENTAREA PREDICATELOR

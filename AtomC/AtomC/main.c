@@ -2,8 +2,8 @@
 
 void readFile()
 {
-    FILE* file_input = fopen("../TestFiles/9.c", "r");
-    if (file_input== NULL)
+    FILE* file_input;
+    if (fopen_s(&file_input, "../TestFiles/9.c", "r") != 0)
     {
         printf("Error with file input!\n");
     }
@@ -23,7 +23,6 @@ void analizorSintactic()
 {
     crtTk = tokens;
     initSymbols(&symbols);
-    addExtFuncs();
     if (unit())
         printf("Syntax OK\n");
     else
@@ -32,18 +31,18 @@ void analizorSintactic()
 
 void masinaVirtuala()
 {
-    addExtMVFuncs();
     mvTest();
     run(instructions);
 }
 
 int main(int argc, char* argv[])
 {
-    //readFile();
-    //analizorLexical();    
-    //analizorSintactic();
-    //showAtoms(tokens);
-    //terminare(tokens);
+    readFile();
+    analizorLexical();
+    addExtFuncs();
+    analizorSintactic();
+    showAtoms(tokens);
+    terminare(tokens);
     masinaVirtuala();
     return 0;
 }

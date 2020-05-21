@@ -224,39 +224,42 @@ get_s(char s[])     // Cere de la tastatura un sir de caractere si il depune in 
     scanf("%s", s);
 }
 
-void put_ii(int i)  // Afiseaza intregul i
+void put_i()        // Afiseaza intregul i
 {
-    printf("%d", i);
+    printf("#%d\n", popi());
 }
 
-int get_ii()  // Cere de la tastatura un numar real
+int get_i()  // Cere de la tastatura un numar intreg
 {
     int i;
     scanf("%d", &i);
+    pushi(i);
     return i;
 }
 
 put_d(double d)     // Afiseaza numarul real d
 {
-    printf("%lf", d);
+    printf("%lf\n", popd());
 }
 
 double get_d()      // Cere de la tastatura un numar real
 {
     double d;
     scanf("%lf", &d);
+    pushd(d);
     return d;
 }
 
 void put_c(char c)  // Afiseaza caracterul c
 {
-    printf("%c", c);
+    printf("%c\n", popc());
 }
 
 char get_c()    // Cere de la tastatura un caracter
 {
     char c;
     scanf("%c", &c);
+    pushc(c);
     return c;
 }
 
@@ -279,13 +282,16 @@ void addExtFuncs()
     addFuncArg(s, "s", createType(TB_CHAR, 0));
 
     // void put_i(int i) - Afiseaza intregul i
-    s = addExtFunc("put_i", createType(TB_VOID, -1), put_ii);
-    addFuncArg(s, "s", createType(TB_INT, -1));
-
+    s = addExtFunc("put_i", createType(TB_VOID, -1), put_i);
+    addFuncArg(s, "i", createType(TB_INT, -1));
+    // or you can use the two lines below instead addFuncArg(s, "i", createType(TB_INT, -1))
+    //a = addSymbol(&s->args, "i", CLS_VAR);
+    //a->type = createType(TB_INT, -1);
+    
     // int get_i() - Cere de la tastatura un intreg
-    s = addExtFunc("get_i", createType(TB_INT, -1), get_ii);
+    s = addExtFunc("get_i", createType(TB_INT, -1), get_i);
 
-    //// void put_d(double d) - Afiseaza numarul real d
+    // void put_d(double d) - Afiseaza numarul real d
     s = addExtFunc("put_d", createType(TB_VOID, -1), put_d);
     addFuncArg(s, "d", createType(TB_DOUBLE, -1));
 
@@ -294,7 +300,7 @@ void addExtFuncs()
 
     // void put_c(char c) - Afiseaza caracterul c
     s = addExtFunc("put_c", createType(TB_VOID, -1), put_c);
-    //addFuncArg(s, "c", createType(TB_CHAR, -1));
+    addFuncArg(s, "c", createType(TB_CHAR, -1));
 
     // char get_c() - Cere de la tastatura un caracter
     s = addExtFunc("get_c", createType(TB_CHAR, -1), get_c);

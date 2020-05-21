@@ -198,7 +198,7 @@ void terminare(Token* tk);
 
 int unit();             // unit: ( declStruct | declFunc | declVar )* END ;    
 void initSymbols(Symbols* symbols);
-void addExtFuncs(); // Add default functions: void put_s(char s[]), void get_s(char s[]), void put_i(int i), int get_i(), void put_d(double d), double get_d(), char get_c(), double seconds()
+void addExtFunctions(); // Add default functions: void put_s(char s[]), void get_s(char s[]), void put_i(int i), int get_i(), void put_d(double d), double get_d(), char get_c(), double seconds()
 Symbol* addSymbol(Symbols* symbols, const char* name, int cls);
 Symbol* findSymbol(Symbols* symbols, const char* name);  // Find a symbol with given name in specified Symbols Table
 void deleteSymbolsAfter(Symbols* symbols, Symbol* symbolPointer);    // Delete all symbols after symbol given in symbolPointer
@@ -209,6 +209,14 @@ Symbol* addFuncArg(Symbol* func, const char* name, Type type);
 /* ----------------------------- MV FUNCTION DECLARATIONS ----------------------------- */
 
 void* allocGlobal(int size);
+void pushd(double d);
+double popd();
+void pushi(int i);
+int popi();
+void pushc(char c);
+char popc();
+void pusha(void* a);
+void* popa();
 Instr* createInstr(int opcode);
 void insertInstrAfter(Instr* after, Instr* i);
 Instr* addInstr(int opcode);
@@ -218,6 +226,5 @@ Instr* addInstrI(int opcode, int val);
 Instr* addInstrII(int opcode, int val1, int val2);
 void deleteInstructionsAfter(Instr* start);
 Symbol* requireSymbol(Symbols* symbols, const char* name);
-void addExtMVFuncs();
 void run(Instr* IP);
 void mvTest();

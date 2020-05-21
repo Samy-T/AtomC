@@ -1,2 +1,3 @@
 ﻿  main.c
-  AtomC.vcxproj -> D:\UPT\ANUL III\SEM II\LFTC\Laborator\LFTC_10\AtomC\Debug\AtomC.exe
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\main.c(42,16): warning C4013: 'addExtFuncs' undefined; assuming extern returning int
+  AtomC.vcxproj -> D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\Debug\AtomC.exe

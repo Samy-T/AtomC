@@ -206,20 +206,6 @@ Symbol* requireSymbol(Symbols* symbols, const char* name)  // Find a symbol with
 	err("Undefined symbol!");
 }
 
-void put_i()
-{
-	printf("#%d\n", popi());
-}
-
-void addExtMVFuncs()
-{
-	Symbol* s, * a;
-
-	s = addExtFunc("put_i", createType(TB_VOID, -1), put_i);
-	a = addSymbol(&s->args, "i", CLS_VAR);
-	a->type = createType(TB_INT, -1);
-}
-
 /* ------------------------------ MAIN FUNCTION FOR MV ------------------------------ */
 
 void run(Instr* IP)

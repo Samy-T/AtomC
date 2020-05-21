@@ -179,31 +179,26 @@ Instr* addInstrII(int opcode, int val1, int val2)
 
 void deleteInstructionsAfter(Instr* start)
 {
-	Instr* currentInstr = instructions;
-	while(currentInstr)
+	if (instructions == start || lastInstruction == start)
 	{
-		if (currentInstr == start)	// find start in instructions
-		{			
-			currentInstr = start->next;	
-			while (currentInstr->next)
-			{
-				currentInstr = currentInstr->next;
-				free(currentInstr->last);
-			}
-		}
-		currentInstr = currentInstr->next;
+		return;
 	}
-}
 
-Symbol* requireSymbol(Symbols* symbols, const char* name)  // Find a symbol with given name in specified Symbols Table
-{
-	int index = (symbols->end) - (symbols->begin) - 1;
-	for (int i = index; i >= 0; i--)
+	for (Instr* i = instructions->next; i != lastInstruction; i = i->next)
 	{
-		if (strcmp(symbols->begin[i]->name, name) == 0)
-			return symbols->begin[i];
+		if (i == start)
+		{
+			while (lastInstruction != start)
+			{
+				i = lastInstruction;
+				lastInstruction = i->last;
+				free(i);
+			}
+			return;
+		}
 	}
-	err("Undefined symbol!");
+	//start->next = NULL;
+	//lastInstruction = start;
 }
 
 /* ------------------------------ MAIN FUNCTION FOR MV ------------------------------ */
@@ -327,6 +322,7 @@ void run(Instr* IP)
 		case O_STORE:
 			iVal1 = IP->args[0].i;
 			if (SP - (sizeof(void*) + iVal1) < stack) err("not enough stack bytes for SET");
+			printf("-----| %d | -----\n", SP - (sizeof(void*) + iVal1));
 			aVal1 = *(void**)(SP - ((sizeof(void*) + iVal1)));
 			printf("STORE\t%d\t(%p)\n", iVal1, aVal1);
 			memcpy(aVal1, SP - iVal1, iVal1);

@@ -1,3 +1,4 @@
-﻿  main.c
-D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\main.c(42,16): warning C4013: 'addExtFuncs' undefined; assuming extern returning int
+﻿  masinaVirtuala.c
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\masinaVirtuala.c(305,11): warning C4477: 'printf' : format string '%p' requires an argument of type 'void *', but variadic argument 1 has type 'int'
+D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\AtomC\masinaVirtuala.c(325,11): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'char *'
   AtomC.vcxproj -> D:\UPT\PROJECTS\LFTC_AN3\AtomC\AtomC\Debug\AtomC.exe

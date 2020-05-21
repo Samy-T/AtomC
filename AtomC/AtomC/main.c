@@ -3,7 +3,7 @@
 void readFile()
 {
     FILE* file_input;
-    if (fopen_s(&file_input, "../TestFiles/9.c", "r") != 0)
+    if (fopen_s(&file_input, "../TestFiles/test.c", "r") != 0)
     {
         printf("Error with file input!\n");
     }
@@ -22,7 +22,6 @@ void analizorLexical()
 void analizorSintactic()
 {
     crtTk = tokens;
-    initSymbols(&symbols);
     if (unit())
         printf("Syntax OK\n");
     else
@@ -31,18 +30,21 @@ void analizorSintactic()
 
 void masinaVirtuala()
 {
-    mvTest();
+    //mvTest();
     run(instructions);
 }
 
 int main(int argc, char* argv[])
 {
+    initSymbols(&symbols);
+    addExtFuncs();
+
     readFile();
     analizorLexical();
-    addExtFuncs();
-    analizorSintactic();
+    analizorSintactic(); 
+    masinaVirtuala();
+
     showAtoms(tokens);
     terminare(tokens);
-    masinaVirtuala();
     return 0;
 }

@@ -1,10 +1,8 @@
+int x;
 void main()
 {
-    int v;
-    v = 3; 
-	while (v)
-	{ 
-		put_i(v); 
-		v = v - 1; 
-	}       
+	for(x=0;x<3;x=x+1)
+	{
+		put_i(x);
+	}
 }

@@ -352,7 +352,7 @@ Instr* getRVal(RetVal* rv)
 
 void addCastInstr(Instr* after, Type* actualType, Type* neededType)
 {
-    if (actualType->nElements >= 0 || neededType->nElements >= 0)return;
+    if (actualType->nElements >= 0 || neededType->nElements >= 0) return;
     switch (actualType->typeBase) {
     case TB_CHAR:
         switch (neededType->typeBase) {
@@ -786,19 +786,19 @@ int stmIF(Instr* i1, Instr* i2)
             {
                 i1 = createCondJmp(&rv);
                 if (stm())
-                {
+                {                        
                     if (consume(ELSE))
                     {
-                        i2 = addInstr(O_JMP);
+                        i2 = addInstr(O_JMP); 
                         if (stm())
                         {   
                             i1->args[0].addr = i2->next;
                             i1 = i2;
+                            i1->args[0].addr = addInstr(O_NOP); printf("%p", i1->args[0].addr);
                             return 1;
                         }
                         else tkerr(crtTk, "missing statement for ELSE");
-                    }
-                    i1->args[0].addr = addInstr(O_NOP);
+                    }                    
                     return 1;
                 }
                 else tkerr(crtTk, "error in IF body or missing body for IF");
@@ -931,28 +931,28 @@ int stm()
     Token* startTk = crtTk;
     RetVal rv;
     Instr* startLastInstr = lastInstruction;
-    Instr* i, * i1, * i2;
+    Instr* i, * i1 = NULL, * i2 = NULL;
     if (stmCompound())
     {
         return 1;
     }
     else if (consume(IF))
     {
-        if (stmIF(&i1, &i2))
+        if (stmIF(i1, i2))
         {
             return 1;
         }
     }
     else if (consume(WHILE))
     {
-        if (stmWHILE(&i1, &i2))
+        if (stmWHILE(i1, i2))
         {
             return 1;
         }
     }
     else if (consume(FOR))
     {
-        if (stmFOR(&i2))
+        if (stmFOR(i2))
         {
             return 1;
         }
@@ -1011,11 +1011,11 @@ int stmCompound()
 {
     Token* startTk = crtTk;
     Instr* startLastInstr = lastInstruction;
-    //Symbol* start = symbols.end[-1];
+    Symbol* start = symbols.end[-1];
 
     if (consume(LACC))
     {
-        //crtDepth++;
+        crtDepth++;
         for (;;)
         {
             if (declVar()) {
@@ -1025,8 +1025,8 @@ int stmCompound()
             else break;
         }
         if (consume(RACC)) {
-            //crtDepth--;
-            //deleteSymbolsAfter(&symbols, start);
+            crtDepth--;
+            deleteSymbolsAfter(&symbols, start);
             return 1;
         }
         else tkerr(crtTk, "missing '}'");
@@ -1094,7 +1094,8 @@ int exprAssign(RetVal* rv)
 int exprOrPrim(RetVal* rv)
 {
     RetVal rve;
-    Instr* i1, * i2; Type t, t1, t2;
+    Instr* i1, * i2; 
+    Type t, t1, t2;
     if (consume(OR))
     {
         i1 = rv->type.nElements < 0 ? getRVal(rv) : lastInstruction;
@@ -1150,7 +1151,8 @@ int exprOr(RetVal* rv)
 int exprAndPrim(RetVal* rv)
 {
     RetVal rve;
-    Instr* i1, * i2; Type t, t1, t2;
+    Instr* i1, * i2; 
+    Type t, t1, t2;
     if (consume(AND))
     {
         i1 = rv->type.nElements < 0 ? getRVal(rv) : lastInstruction;
@@ -1207,7 +1209,8 @@ int exprAnd(RetVal* rv)
 int exprEqPrim(RetVal* rv)
 {
     RetVal rve;
-    Instr* i1, * i2; Type t, t1, t2;
+    Instr* i1, * i2; 
+    Type t, t1, t2;
     if (consume(EQUAL) || consume(NOTEQ))
     {
         Token* tkop = consumedTk;
@@ -1277,7 +1280,8 @@ int exprEq(RetVal* rv)
 int exprRelPrim(RetVal* rv)
 {
     RetVal rve;
-    Instr* i1, * i2; Type t, t1, t2;
+    Instr* i1, * i2; 
+    Type t, t1, t2;
     if (consume(LESS) || consume(LESSEQ) || consume(GREATER) || consume(GREATEREQ))
     {
         Token* tkop = consumedTk;
@@ -1358,7 +1362,8 @@ int exprRel(RetVal* rv)
 int exprAddPrim(RetVal* rv)
 {
     RetVal rve;
-    Instr* i1, * i2; Type t1, t2;
+    Instr* i1, * i2; 
+    Type t1, t2;
     if (consume(ADD) || consume(SUB))
     {
         Token* tkop = consumedTk;
@@ -1421,7 +1426,8 @@ int exprAdd(RetVal* rv)
 int exprMulPrim(RetVal* rv)
 {
     RetVal rve;
-    Instr* i1, * i2; Type t1, t2;
+    Instr* i1, * i2; 
+    Type t1, t2;
     if (consume(MUL) || consume(DIV))
     {
         Token* tkop = consumedTk;

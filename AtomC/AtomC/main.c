@@ -3,7 +3,7 @@
 void readFile()
 {
     FILE* file_input;
-    if (fopen_s(&file_input, "../TestFiles/test.c", "r") != 0)
+    if (fopen_s(&file_input, "../TestFiles/9.c", "r") != 0)
     {
         printf("Error with file input!\n");
     }
@@ -42,9 +42,12 @@ int main(int argc, char* argv[])
     readFile();
     analizorLexical();
     analizorSintactic(); 
+    
+    showAtoms(tokens);
+    
     masinaVirtuala();
 
-    showAtoms(tokens);
     terminare(tokens);
+    
     return 0;
 }

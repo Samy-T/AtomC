@@ -233,14 +233,15 @@ Symbol* addFuncArg(Symbol* func, const char* name, Type type)
 
 /* ------------------------------------------------- PREDEFINED FUNCTIONS ------------------------------------------------- */
 
-void put_s(char s[])    // Afiseaza sirul de caractere dat
-{
-    printf("%s", s);
+void put_s()    // Afiseaza sirul de caractere dat
+{    
+    printf("%s\n", popa());   
 }
 
-get_s(char s[])     // Cere de la tastatura un sir de caractere si il depune in s
+void get_s(char *s)     // Cere de la tastatura un sir de caractere si il depune in s
 {
     scanf("%s", s);
+    pusha(&s);    
 }
 
 void put_i()        // Afiseaza intregul i
@@ -256,20 +257,20 @@ int get_i()  // Cere de la tastatura un numar intreg
     return i;
 }
 
-put_d(double d)     // Afiseaza numarul real d
+put_d()     // Afiseaza numarul real d
 {
-    printf("%lf\n", popd());
+    printf("%g\n", popd());
 }
 
 double get_d()      // Cere de la tastatura un numar real
 {
     double d;
-    scanf("%lf", &d);
+    scanf("%g", &d);
     pushd(d);
     return d;
 }
 
-void put_c(char c)  // Afiseaza caracterul c
+void put_c()  // Afiseaza caracterul c
 {
     printf("%c\n", popc());
 }
